@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaFit | Servicios</title><link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header><h1>NovaFit</h1><p>Elige tu afiliación</p></header>
+<nav><a href="/">Inicio</a><a href="/acerca">Acerca de</a><a href="/registro">Registro</a><a href="/servicios">Servicios</a></nav>
+<main>
+<section class="content">
+  <h2>Planes disponibles</h2>
+  <div class="cards">
+    <article><h3>Básico</h3><p>Acceso general al gimnasio.</p></article>
+    <article><h3>Premium</h3><p>Acceso general y seguimiento personalizado.</p></article>
+    <article><h3>Integral</h3><p>Acceso completo y asesoría de entrenamiento.</p></article>
+  </div>
+</section>
+<section class="form-section">
+  <h2>Registrar afiliación</h2>
+  <form action="/afiliaciones" method="POST">
+    <label for="usuario_id">ID del usuario registrado</label>
+    <input id="usuario_id" name="usuario_id" type="number" min="1" required>
+    <label for="plan">Plan</label>
+    <select id="plan" name="plan" required>
+      <option value="">Selecciona un plan</option><option>Básico</option><option>Premium</option><option>Integral</option>
+    </select>
+    <label for="horario">Horario preferido</label>
+    <input id="horario" name="horario" type="text" placeholder="Ej. 6:00 a. m." required>
+    <label for="fecha_inicio">Fecha de inicio</label>
+    <input id="fecha_inicio" name="fecha_inicio" type="date" required>
+    <button type="submit">Registrar afiliación</button>
+  </form>
+</section>
+</main>
+<footer><p>NovaFit · Afiliaciones persistentes con SQLite</p></footer>
+</body>
+</html>
