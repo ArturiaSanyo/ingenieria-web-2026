@@ -1,0 +1,39 @@
+digraph G {
+  graph [label="Implementación OOHDM - NovaFit (HTML, CSS, Node.js, HTTP y SQLite)", labelloc=t, fontsize=20, fontname="DejaVu Sans", rankdir=TB, nodesep=0.5, ranksep=1.0, pad=0.4, bgcolor=white, compound=true];
+  node [shape=box, style="rounded,filled", fontname="DejaVu Sans", fontsize=12, fillcolor="#FFFFFF"];
+  edge [fontname="DejaVu Sans", fontsize=11];
+
+  user [label="Usuario\n(persona)", shape=ellipse, fillcolor="#FFF4CC"];
+
+  subgraph cluster_nav {
+    label="Navegador"; fontname="DejaVu Sans"; style="filled,rounded"; fillcolor="#F3F7FF"; color="#1F4E9C";
+    pages [label="Páginas HTML recibidas\nindex.html · acerca.html\nregistro.html · servicios.html", fillcolor="#EAF3FF"];
+    css   [label="styles.css\n(presentación)", fillcolor="#EAF3FF"];
+    f1    [label="<form action=\"/usuarios\" method=\"POST\">\nnombre, correo, telefono", fillcolor="#EAF3FF"];
+    f2    [label="<form action=\"/afiliaciones\" method=\"POST\">\nusuario_id, plan, horario, fecha_inicio", fillcolor="#EAFBEA"];
+  }
+
+  subgraph cluster_node {
+    label="Servidor Node.js (server.js · módulo node:http · puerto 3000)"; fontname="DejaVu Sans"; style="filled,rounded"; fillcolor="#FAFAFA"; color="#555555";
+    getr [label="Rutas GET\n/ → index.html\n/acerca → acerca.html\n/registro → registro.html\n/servicios → servicios.html\n/styles.css → styles.css\notra → 404", fillcolor="#EAF3FF"];
+    pu   [label="POST /usuarios\nvalida campos → 201 / 400\ninsertUsuario.run(nombre, correo, telefono)", fillcolor="#EAF3FF"];
+    pa   [label="POST /afiliaciones\nvalida campos y usuario_id → 201 / 400\nfindUsuario.get(usuario_id)\ninsertAfiliacion.run(usuario_id, plan, horario, fecha_inicio)", fillcolor="#EAFBEA"];
+  }
+
+  subgraph cluster_db {
+    label="SQLite (node:sqlite · gimnasio.db)"; fontname="DejaVu Sans"; style="filled,rounded"; fillcolor="#FFF8EC"; color="#B8860B";
+    tu [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR><TD BGCOLOR="#1F4E9C"><FONT COLOR="white"><B>usuarios</B>  (clase Usuario)</FONT></TD></TR><TR><TD ALIGN="LEFT">id PK AUTOINCREMENT<BR ALIGN="LEFT"/>nombre · correo · telefono<BR ALIGN="LEFT"/></TD></TR></TABLE>>, shape=plaintext];
+    ta [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR><TD BGCOLOR="#1E7B34"><FONT COLOR="white"><B>afiliaciones</B>  (clase Afiliacion)</FONT></TD></TR><TR><TD ALIGN="LEFT">id PK AUTOINCREMENT<BR ALIGN="LEFT"/>usuario_id (referencia a usuarios.id)<BR ALIGN="LEFT"/>plan · horario · fecha_inicio<BR ALIGN="LEFT"/></TD></TR></TABLE>>, shape=plaintext];
+  }
+
+  user -> pages [label="navega y llena formularios", dir=both];
+  pages -> f1 [style=invis]; pages -> f2 [style=invis];
+  pages -> getr [label="GET /, /acerca, /registro, /servicios, /styles.css  (respuesta 200 text/html o text/css)", lhead=cluster_node];
+  pages -> css [style=dotted, arrowhead=none, label="link rel=stylesheet"];
+  f1 -> pu [label="POST /usuarios\n(application/x-www-form-urlencoded)", penwidth=1.6, color="#1F4E9C"];
+  f2 -> pa [label="POST /afiliaciones\n(application/x-www-form-urlencoded)", penwidth=1.6, color="#1E7B34"];
+  pu -> tu [label="INSERT INTO usuarios (nombre, correo, telefono)\nVALUES (?, ?, ?)", color="#1F4E9C"];
+  pa -> tu [label="SELECT id FROM usuarios WHERE id = ?", style=dashed];
+  pa -> ta [label="INSERT INTO afiliaciones (usuario_id, plan, horario, fecha_inicio)\nVALUES (?, ?, ?, ?)", color="#1E7B34"];
+  ta -> tu [label="usuario_id → id\n(1 a 0..*)", style=bold, arrowhead=odiamond, constraint=false];
+}

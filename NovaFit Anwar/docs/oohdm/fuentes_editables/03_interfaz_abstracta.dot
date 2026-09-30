@@ -1,0 +1,32 @@
+digraph G {
+  graph [label="Interfaz abstracta OOHDM - NovaFit (formularios Registro y Servicios)", labelloc=t, fontsize=20, fontname="DejaVu Sans", rankdir=TB, nodesep=0.6, ranksep=0.9, pad=0.4, bgcolor=white];
+  node [shape=plaintext, fontname="DejaVu Sans", fontsize=12];
+  edge [fontname="DejaVu Sans", fontsize=11];
+
+  reg [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#EAF3FF">
+      <TR><TD COLSPAN="2" BGCOLOR="#1F4E9C"><FONT COLOR="white"><B>ADV Registro  (GET /registro, registro.html)</B></FONT></TD></TR>
+      <TR><TD BGCOLOR="#DDE8F8"><B>Información visible</B></TD><TD ALIGN="LEFT" BALIGN="LEFT">Título "Registro de usuario"; instrucción para obtener el identificador; menú de navegación</TD></TR>
+      <TR><TD BGCOLOR="#DDE8F8"><B>Campos de entrada<BR/>(escribe el usuario)</B></TD><TD ALIGN="LEFT" BALIGN="LEFT">nombre (texto) · correo (email) · telefono (tel)<BR/>Todos obligatorios (required)</TD></TR>
+      <TR><TD BGCOLOR="#DDE8F8"><B>Datos ocultos</B></TD><TD ALIGN="LEFT" BALIGN="LEFT">Ninguno</TD></TR>
+      <TR><TD BGCOLOR="#DDE8F8"><B>Botón / evento</B></TD><TD ALIGN="LEFT" BALIGN="LEFT">"Registrar usuario" → envío POST /usuarios</TD></TR>
+      <TR><TD BGCOLOR="#DDE8F8"><B>Genera el servidor</B></TD><TD ALIGN="LEFT" BALIGN="LEFT">id del usuario (AUTOINCREMENT en SQLite)</TD></TR>
+      <TR><TD BGCOLOR="#DFF5E1"><B>Envío correcto</B></TD><TD ALIGN="LEFT" BALIGN="LEFT">201 · "Registro exitoso" + ID generado · botón Continuar → /servicios</TD></TR>
+      <TR><TD BGCOLOR="#FBE0E0"><B>Datos incompletos</B></TD><TD ALIGN="LEFT" BALIGN="LEFT">400 · "Datos incompletos" · botón Continuar → /registro</TD></TR>
+    </TABLE>>];
+
+  srv [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#EAFBEA">
+      <TR><TD COLSPAN="2" BGCOLOR="#1E7B34"><FONT COLOR="white"><B>ADV Servicios  (GET /servicios, servicios.html)</B></FONT></TD></TR>
+      <TR><TD BGCOLOR="#D6EFD9"><B>Información visible</B></TD><TD ALIGN="LEFT" BALIGN="LEFT">Planes disponibles: Básico, Premium, Integral; título "Registrar afiliación"; menú</TD></TR>
+      <TR><TD BGCOLOR="#D6EFD9"><B>Campos de entrada<BR/>(escribe el usuario)</B></TD><TD ALIGN="LEFT" BALIGN="LEFT">usuario_id (número, min 1) · plan (select) ·<BR/>horario (texto) · fecha_inicio (fecha)<BR/>Todos obligatorios (required)</TD></TR>
+      <TR><TD BGCOLOR="#D6EFD9"><B>Dato conservado</B></TD><TD ALIGN="LEFT" BALIGN="LEFT">usuario_id: es el ID mostrado en la confirmación del registro;<BR/>el usuario lo transcribe (no hay campo oculto)</TD></TR>
+      <TR><TD BGCOLOR="#D6EFD9"><B>Botón / evento</B></TD><TD ALIGN="LEFT" BALIGN="LEFT">"Registrar afiliación" → envío POST /afiliaciones</TD></TR>
+      <TR><TD BGCOLOR="#D6EFD9"><B>Genera el servidor</B></TD><TD ALIGN="LEFT" BALIGN="LEFT">id de la afiliación (AUTOINCREMENT en SQLite)</TD></TR>
+      <TR><TD BGCOLOR="#DFF5E1"><B>Envío correcto</B></TD><TD ALIGN="LEFT" BALIGN="LEFT">201 · "Afiliación exitosa" + ID de la afiliación · Continuar → /</TD></TR>
+      <TR><TD BGCOLOR="#FBE0E0"><B>Datos incompletos</B></TD><TD ALIGN="LEFT" BALIGN="LEFT">400 · "Datos incompletos" · Continuar → /servicios</TD></TR>
+      <TR><TD BGCOLOR="#FBE0E0"><B>ID inexistente</B></TD><TD ALIGN="LEFT" BALIGN="LEFT">400 · "Usuario no encontrado" · Continuar → /servicios</TD></TR>
+    </TABLE>>];
+
+  reg -> srv [label="  ID generado en la respuesta 201\n  → se escribe en usuario_id  ", penwidth=2, color="#1F4E9C", fontsize=12];
+}

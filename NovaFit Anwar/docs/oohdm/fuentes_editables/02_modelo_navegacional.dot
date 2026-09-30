@@ -1,0 +1,40 @@
+digraph G {
+  graph [label="Modelo navegacional OOHDM - NovaFit (nodos, accesos y enlaces)", labelloc=t, fontsize=20, fontname="DejaVu Sans", rankdir=TB, nodesep=0.6, ranksep=0.9, pad=0.4, bgcolor=white, compound=true];
+  node [shape=box, style="rounded,filled", fontname="DejaVu Sans", fontsize=12, fillcolor="#EAF3FF", color="#1F4E9C"];
+  edge [fontname="DejaVu Sans", fontsize=11];
+
+  subgraph cluster_menu {
+    label="Estructura de acceso: menú principal (presente en las 4 páginas)"; fontname="DejaVu Sans"; fontsize=12; style="dashed"; color="#888888";
+    m [label="Menú\nInicio | Acerca de | Registro | Servicios", shape=box, style="filled", fillcolor="#FFF4CC", color="#B8860B"];
+  }
+
+  inicio   [label="Nodo Inicio\nGET /"];
+  acerca   [label="Nodo Acerca de\nGET /acerca"];
+  registro [label="Nodo Registro\nGET /registro\n(formulario de usuario)"];
+  servicios[label="Nodo Servicios\nGET /servicios\n(planes + formulario de afiliación)"];
+
+  okU  [label="Respuesta: Registro exitoso\nPOST /usuarios → 201\nmuestra el ID generado", fillcolor="#EAFBEA", color="#1E7B34"];
+  errU [label="Respuesta: Datos incompletos\nPOST /usuarios → 400", fillcolor="#FDECEC", color="#B02A2A"];
+  okA  [label="Respuesta: Afiliación exitosa\nPOST /afiliaciones → 201\nmuestra el ID de la afiliación", fillcolor="#EAFBEA", color="#1E7B34"];
+  errA [label="Respuesta: Datos incompletos\nPOST /afiliaciones → 400", fillcolor="#FDECEC", color="#B02A2A"];
+  errN [label="Respuesta: Usuario no encontrado\nPOST /afiliaciones → 400\n(usuario_id inexistente)", fillcolor="#FDECEC", color="#B02A2A"];
+  nf   [label="Respuesta 404\nruta inexistente", fillcolor="#EEEEEE", color="#666666"];
+
+  m -> inicio    [label="consultar"];
+  m -> acerca    [label="consultar"];
+  m -> registro  [label="consultar"];
+  m -> servicios [label="consultar"];
+
+  inicio -> registro [label="Comenzar registro"];
+  registro -> okU  [label="registrar\n(nombre, correo, telefono)"];
+  registro -> errU [label="registrar (campos vacíos)", style=dashed];
+  errU -> registro [label="Continuar / volver", style=dashed];
+  okU -> servicios [label="Continuar\n(el usuario lleva el ID\npara escribir usuario_id)", penwidth=2, color="#1F4E9C"];
+  servicios -> okA  [label="solicitar afiliación\n(usuario_id, plan, horario, fecha_inicio)", penwidth=2, color="#1E7B34"];
+  servicios -> errA [label="datos inválidos", style=dashed];
+  servicios -> errN [label="ID no existe", style=dashed];
+  errA -> servicios [label="Continuar / volver", style=dashed];
+  errN -> servicios [label="Continuar / volver", style=dashed];
+  okA -> inicio [label="Continuar"];
+  m -> nf [label="URL no definida", style=dotted, arrowhead=open];
+}

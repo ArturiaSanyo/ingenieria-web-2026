@@ -1,0 +1,25 @@
+digraph G {
+  graph [label="Modelo conceptual OOHDM - NovaFit (Gimnasio)", labelloc=t, fontsize=20, fontname="DejaVu Sans", rankdir=LR, nodesep=1.0, ranksep=2.2, pad=0.4, bgcolor=white];
+  node [shape=plaintext, fontname="DejaVu Sans", fontsize=13];
+  edge [fontname="DejaVu Sans", fontsize=13];
+
+  Usuario [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#EAF3FF">
+      <TR><TD BGCOLOR="#1F4E9C"><FONT COLOR="white"><B>Usuario</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">id : entero (identificador generado)</TD></TR>
+      <TR><TD ALIGN="LEFT">nombre : texto</TD></TR>
+      <TR><TD ALIGN="LEFT">correo : texto</TD></TR>
+      <TR><TD ALIGN="LEFT">telefono : texto</TD></TR>
+    </TABLE>>];
+
+  Afiliacion [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#EAFBEA">
+      <TR><TD BGCOLOR="#1E7B34"><FONT COLOR="white"><B>Afiliacion</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT">id : entero (identificador generado)</TD></TR>
+      <TR><TD ALIGN="LEFT">plan : texto (Básico, Premium, Integral)</TD></TR>
+      <TR><TD ALIGN="LEFT">horario : texto</TD></TR>
+      <TR><TD ALIGN="LEFT">fecha_inicio : fecha</TD></TR>
+    </TABLE>>];
+
+  Usuario -> Afiliacion [arrowhead=none, label="  solicita / posee  ", taillabel="1", headlabel="0..*", labeldistance=3, labelfontsize=16, penwidth=1.6];
+}
