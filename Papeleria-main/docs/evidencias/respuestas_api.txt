@@ -1,0 +1,69 @@
+Evidencia de respuestas HTTP y consultas a SQLite — 15/10/2026 20:02
+El servidor se detuvo y se volvió a iniciar antes de estas consultas (caso 9). Generado con curl -i.
+
+================================================================
+$ curl -i localhost:3000/api/productos/1
+----------------------------------------------------------------
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Content-Length: 133
+Cache-Control: no-store
+
+{"id":1,"nombre":"Cuaderno argollado","descripcion":"Cuaderno de 100 hojas cuadriculadas, tapa dura y argolla doble.","precio":12000}
+
+
+================================================================
+$ curl -i localhost:3000/api/productos/999
+----------------------------------------------------------------
+HTTP/1.1 404 Not Found
+Content-Type: application/json; charset=utf-8
+Content-Length: 45
+Cache-Control: no-store
+
+{"error":"No existe un producto con id 999."}
+
+
+================================================================
+$ curl -i localhost:3000/api/pedidos
+----------------------------------------------------------------
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Content-Length: 318
+Cache-Control: no-store
+
+[{"id":1,"nombre":"Ana Ejemplo","correo":"ana@example.com","fecha":"2026-10-15 20:02:24","total":26500,"detalles":[{"producto_id":1,"nombre":"Cuaderno argollado","cantidad":2,"precio_unitario":12000,"subtotal":24000},{"producto_id":2,"nombre":"Bolígrafo de gel","cantidad":1,"precio_unitario":2500,"subtotal":2500}]}]
+
+
+================================================================
+$ curl -i -X POST localhost:3000/api/pedidos  (producto 999 junto a uno válido; total alterado)
+----------------------------------------------------------------
+HTTP/1.1 400 Bad Request
+Content-Type: application/json; charset=utf-8
+Content-Length: 104
+Cache-Control: no-store
+
+{"error":"El pedido incluye productos que no existen.","detalles":["El producto con id 999 no existe."]}
+
+
+================================================================
+Consultas directas a data/tienda.db (después del rechazo anterior)
+----------------------------------------------------------------
+sqlite> SELECT COUNT(*) AS pedidos FROM pedidos
+┌─────────┬─────────┐
+│ (index) │ pedidos │
+├─────────┼─────────┤
+│ 0       │ 1       │
+└─────────┴─────────┘
+sqlite> SELECT COUNT(*) AS detalles FROM detalle_pedido
+┌─────────┬──────────┐
+│ (index) │ detalles │
+├─────────┼──────────┤
+│ 0       │ 2        │
+└─────────┴──────────┘
+sqlite> SELECT p.id, p.nombre, p.fecha, p.total, d.producto_id, d.cantidad, d.precio_unitario FROM pedidos p JOIN detalle_pedido d ON d.pedido_id = p.id ORDER BY p.id, d.id
+┌─────────┬────┬───────────────┬───────────────────────┬───────┬─────────────┬──────────┬─────────────────┐
+│ (index) │ id │ nombre        │ fecha                 │ total │ producto_id │ cantidad │ precio_unitario │
+├─────────┼────┼───────────────┼───────────────────────┼───────┼─────────────┼──────────┼─────────────────┤
+│ 0       │ 1  │ 'Ana Ejemplo' │ '2026-10-15 20:02:24' │ 26500 │ 1           │ 2        │ 12000           │
+│ 1       │ 1  │ 'Ana Ejemplo' │ '2026-10-15 20:02:24' │ 26500 │ 2           │ 1        │ 2500            │
+└─────────┴────┴───────────────┴───────────────────────┴───────┴─────────────┴──────────┴─────────────────┘

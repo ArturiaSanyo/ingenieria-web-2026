@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Iniciar tienda",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/server_rutas.js",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"],
+      "serverReadyAction": {
+        "pattern": "http://localhost:([0-9]+)",
+        "uriFormat": "http://localhost:%s",
+        "action": "openExternally"
+      }
+    },
+    {
+      "name": "Probar API (casos de aceptación)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/probar_api.js",
+      "args": ["--markdown"],
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}

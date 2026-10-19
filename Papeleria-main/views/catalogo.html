@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catálogo · Papelería La Libreta</title>
+  <link rel="icon" href="/img/icono.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+  <header class="encabezado">
+    <a class="marca" href="/">Papelería <strong>La Libreta</strong></a>
+    <nav aria-label="Principal">
+      <a href="/" aria-current="page">Catálogo</a>
+      <a href="/carrito">Carrito <span class="contador" data-contador-carrito>0</span></a>
+      <a href="/pedidos">Pedidos</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="titulo">
+      <h1>Catálogo</h1>
+      <p>Útiles escolares y de oficina. Precios en pesos colombianos.</p>
+    </section>
+
+    <p id="estado" class="estado" role="status">Cargando productos…</p>
+    <div id="productos" class="rejilla" hidden></div>
+  </main>
+
+  <footer class="pie">Tienda académica · Información ficticia · No se realizan cobros</footer>
+
+  <script type="module" src="/js/catalogo.js"></script>
+</body>
+</html>

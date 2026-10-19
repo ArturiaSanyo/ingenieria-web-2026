@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carrito · Papelería La Libreta</title>
+  <link rel="icon" href="/img/icono.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+  <header class="encabezado">
+    <a class="marca" href="/">Papelería <strong>La Libreta</strong></a>
+    <nav aria-label="Principal">
+      <a href="/">Catálogo</a>
+      <a href="/carrito" aria-current="page">Carrito <span class="contador" data-contador-carrito>0</span></a>
+      <a href="/pedidos">Pedidos</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Confirmación: se muestra solo después de un registro exitoso -->
+    <section id="confirmacion" class="tarjeta confirmacion" hidden tabindex="-1" aria-live="polite">
+      <h1>¡Pedido registrado!</h1>
+      <p>Pedido <strong id="conf-id"></strong> a nombre de <strong id="conf-nombre"></strong>.</p>
+      <ul id="conf-detalles" class="lista-detalles"></ul>
+      <p class="total-grande">Total: <strong id="conf-total"></strong></p>
+      <p class="nota">El total fue calculado por el servidor con los precios guardados en la base de datos.</p>
+      <p class="acciones">
+        <a class="boton" href="/pedidos">Ver mis pedidos</a>
+        <a class="boton secundario" href="/">Seguir comprando</a>
+      </p>
+    </section>
+
+    <div id="zona-carrito">
+      <section class="titulo">
+        <h1>Carrito</h1>
+        <p>Revisa cantidades antes de registrar el pedido.</p>
+      </section>
+
+      <p id="estado" class="estado" role="status">Cargando carrito…</p>
+
+      <div id="contenido-carrito" class="carrito" hidden>
+        <table class="tabla-carrito">
+          <thead>
+            <tr>
+              <th scope="col">Producto</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Subtotal</th>
+              <th scope="col"><span class="solo-lector">Acciones</span></th>
+            </tr>
+          </thead>
+          <tbody id="filas"></tbody>
+          <tfoot>
+            <tr>
+              <th scope="row" colspan="3">Total provisional</th>
+              <td id="total" class="numero"></td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <form id="formulario" class="tarjeta formulario" novalidate>
+          <h2>Datos del comprador</h2>
+          <label for="nombre">Nombre</label>
+          <input id="nombre" name="nombre" type="text" autocomplete="name" maxlength="100" required>
+          <label for="correo">Correo</label>
+          <input id="correo" name="correo" type="email" autocomplete="email" maxlength="254" required>
+          <div id="error-formulario" class="alerta" role="alert" hidden></div>
+          <button id="boton-enviar" class="boton" type="submit">Registrar pedido</button>
+          <p class="nota">Es un pedido simulado: no se realiza ningún cobro.</p>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="pie">Tienda académica · Información ficticia · No se realizan cobros</footer>
+
+  <script type="module" src="/js/carritoPagina.js"></script>
+</body>
+</html>
