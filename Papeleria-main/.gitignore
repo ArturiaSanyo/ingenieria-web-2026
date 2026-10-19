@@ -1,0 +1,21 @@
+# Dependencias (el proyecto no usa, pero se excluyen por si se agregan)
+node_modules/
+
+# Base de datos generada: contiene pedidos con nombres y correos.
+# Se recrea automáticamente desde data/schema.sql y data/seed.sql.
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+
+# Archivos temporales y del sistema
+*.log
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/launch.json
+.idea/
+
+# Credenciales
+.env
+.env.*

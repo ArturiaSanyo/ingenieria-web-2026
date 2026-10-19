@@ -1,0 +1,16 @@
+{
+  "name": "papeleria-la-libreta",
+  "version": "1.0.0",
+  "description": "Primera versión de una tienda web académica: catálogo, carrito y pedidos simulados (Ingeniería Web, práctica del 20 %).",
+  "main": "server_rutas.js",
+  "private": true,
+  "scripts": {
+    "start": "node server_rutas.js",
+    "reset-db": "node scripts/reiniciar_db.js",
+    "probar": "node --no-warnings scripts/probar_api.js --markdown"
+  },
+  "engines": {
+    "node": ">=24.11.0"
+  },
+  "license": "UNLICENSED"
+}
